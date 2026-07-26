@@ -54,6 +54,13 @@
     video:       "OFF", // відеоінструкція (посилання на YouTube нижче)
     reviews:     "OFF"  // блок "Залишити відгук" (бере посилання з PRODUCT_REVIEWS вище)
   };
+
+  // Зворотний дзвінок. id має бути унікальним і збігатися з дозволеним
+  // кодом товару в Google Apps Script.
+  window.PRODUCT_CALLBACK = {
+    enabled: "ON",
+    id: "inhaler"
+  };
 </script>
 
 <style>
@@ -499,6 +506,8 @@
     bc.appendChild(bar);
   }
 </script>
+<script src="/callback-config.js"></script>
+<script src="/callback.js"></script>
 
 </body>
 </html>
