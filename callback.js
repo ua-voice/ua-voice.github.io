@@ -1,5 +1,5 @@
 /*
-  callback.js — спільна кнопка і форма «ПЕРЕТЕЛЕФОНУЙТЕ МЕНІ».
+  callback.js — спільна кнопка і форма «Замовити дзвінок».
 
   Кожна товарна сторінка задає лише:
     window.PRODUCT_CALLBACK = { enabled: "ON", id: "product-id" };
@@ -26,12 +26,14 @@
       font:inherit;
       text-align:left;
       cursor:pointer;
+      background:#EEF2FA;
+      border-color:#D8E1F1;
     }
     .callback-action .action-title,
     .callback-action .action-sub{ display:block; }
     .callback-action .icon{
-      background:rgba(226,163,61,0.18);
-      color:#B87A16;
+      background:#DDE7F6;
+      color:#4C5A8C;
     }
     .callback-overlay{
       position:fixed;
@@ -197,7 +199,7 @@
       </svg>
     </span>
     <span class="action-text">
-      <span class="action-title">ПЕРЕТЕЛЕФОНУЙТЕ МЕНІ</span>
+      <span class="action-title">Замовити дзвінок</span>
       <span class="action-sub">Залиште номер — ми Вам зателефонуємо</span>
     </span>
     <span class="chev" aria-hidden="true">
@@ -209,7 +211,7 @@
 
   const phoneLink = document.getElementById("phoneLink");
   if (phoneLink && phoneLink.parentNode === actions) {
-    phoneLink.insertAdjacentElement("afterend", button);
+    phoneLink.insertAdjacentElement("beforebegin", button);
   } else {
     actions.insertBefore(button, actions.firstChild);
   }
