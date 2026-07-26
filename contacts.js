@@ -18,8 +18,8 @@ window.CONTACTS = {
   accounts: {
     // ---- телефонні лінії ----
     phone_a: {
-      tel: "+380000000001",
-      display: "+380 00 000 00 01",
+      tel: "+380735805030",
+      display: "+38 073 580 50 30",
       hours: "Пн–Пт, 9:00–18:00"
     },
     phone_b: {
@@ -29,15 +29,15 @@ window.CONTACTS = {
     },
 
     // ---- Viber-акаунти ----
-    viber_a: { number: "380000000001", display: "+380 00 000 00 01" },
+    viber_a: { number: "380735805030", display: "+38 073 580 50 30" },
     viber_b: { number: "380000000003", display: "+380 00 000 00 03" },
 
     // ---- Telegram-акаунти ----
-    telegram_a: { link: "https://t.me/+380000000001", display: "+380 00 000 00 01" },
+    telegram_a: { link: "https://t.me/+380735805030", display: "+38 073 580 50 30" },
     telegram_b: { link: "https://t.me/ваш_другий_юзернейм", display: "@ваш_другий_юзернейм" },
 
     // ---- WhatsApp-акаунти ----
-    whatsapp_a: { number: "380000000001", display: "+380 00 000 00 01" },
+    whatsapp_a: { number: "380735805030", display: "+38 073 580 50 30" },
     whatsapp_b: { number: "380000000002", display: "+380 00 000 00 02" }
   }
 
