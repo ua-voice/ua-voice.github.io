@@ -16,8 +16,8 @@
      ============================================================ */
   :root{
     --product-name: "ІНГАЛЯТОР";
-    /* Ім'я файлу фото товару — покладіть фото поруч з index.html і впишіть тут назву файлу */
-    --product-photo: url("product.png");
+    /* Горизонтальне фото для шапки: рекомендовано 1200 × 630 px */
+    --product-photo: url("product-hero.webp");
   }
 </style>
 
@@ -105,11 +105,10 @@
   /* ---------- header ---------- */
   .head{
     background:
-      linear-gradient(180deg, rgba(22,33,62,0.25) 0%, rgba(22,33,62,0.55) 55%, rgba(22,33,62,0.92) 100%),
       var(--product-photo) center/cover no-repeat,
-      var(--ink);
+      #EAF6F6;
     background-size: cover;
-    color:#fff;
+    color:var(--ink);
     min-height:220px;
     padding:22px 26px 22px;
     position:relative;
@@ -122,7 +121,7 @@
     font-size:11px;
     letter-spacing:.14em;
     text-transform:uppercase;
-    color:#B9C3D9;
+    color:#3F725D;
     margin:0 0 10px;
   }
   .product{
@@ -130,6 +129,7 @@
     font-weight:800;
     line-height:1.15;
     margin:0 0 6px;
+    text-shadow:0 1px 10px rgba(255,255,255,0.85);
   }
   /* ---------- perforation / tear line ---------- */
   .perf{
