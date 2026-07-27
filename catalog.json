@@ -1,14 +1,14 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T14:45:15.878Z",
-  "data_hash": "4fe2643b17f0de64494e937662948b9225a97a033a56cbf15dbda8f8e68450ac",
-  "defaultQrId": "110040М_r1",
+  "generated_at": "2026-07-27T15:51:10.175Z",
+  "data_hash": "4b58f0b7417c4ebc939f0ee6466a0bf690233b8f05886405072b62921f5207ff",
+  "defaultQrId": "110040M_r1",
   "products": {
-    "110040М": {
-      "product_id": "110040М",
+    "110040M": {
+      "product_id": "110040M",
       "name": "ІНГАЛЯТОР",
-      "photo_url": "photos/110040М.webp",
-      "instruction_url": "instructions/110040М.pdf",
+      "photo_url": "photos/110040M.webp",
+      "instruction_url": "instructions/110040M.pdf",
       "instruction_enabled": "ON",
       "video_url": "https://www.youtube.com/watch?v=XXXXXXXXXXX",
       "video_enabled": "OFF",
@@ -78,9 +78,9 @@
     }
   },
   "routes": {
-    "110040М_r1": {
-      "qr_id": "110040М_r1",
-      "product_id": "110040М",
+    "110040M_r1": {
+      "qr_id": "110040M_r1",
+      "product_id": "110040M",
       "store_id": "rozetka1",
       "callback_enabled": "ON",
       "review_url": "https://example.com/review/inhaler-rozetka1",
