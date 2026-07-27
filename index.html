@@ -289,6 +289,19 @@
     padding:12px 13px;
     margin-bottom:2px;
   }
+  .msg-note-title{
+    margin:0 0 10px;
+    text-align:center;
+    color:var(--ink);
+    font-size:13px;
+    font-weight:800;
+  }
+  .msg-note-text{
+    margin:0 0 10px;
+  }
+  .msg-note-text:last-of-type{
+    margin-bottom:0;
+  }
   .msg-hours{
     display:flex;
     gap:16px;
@@ -418,9 +431,16 @@
         <div class="msg-options">
 
           <div class="msg-note">
-            Раді допомогти! Якщо зараз не відповідаємо — залиште повідомлення, зв'яжемось у робочий час.
-            <br><br>
-            У месенджерах відповідаємо лише текстом. Потрібен дзвінок — тисніть <b>«Зателефонувати»</b>.
+            <p class="msg-note-title">Ми раді Вам допомогти!</p>
+            <p class="msg-note-text">
+              Якщо зараз не відповідаємо, будь ласка, залиште повідомлення — ми зв’яжемося з Вами у робочий час.
+            </p>
+            <p class="msg-note-text">
+              У месенджерах відповідаємо лише текстовими повідомленнями — телефонні дзвінки в месенджерах не приймаємо.
+            </p>
+            <p class="msg-note-text">
+              Якщо Вам потрібна телефонна розмова, натисніть <b>«Зателефонувати»</b> або <b>«Замовити дзвінок»</b>.
+            </p>
             <div class="msg-hours">
               <div><span>Пн–Пт</span><b>9:00–18:00</b></div>
               <div><span>Сб–Нд</span><b>11:00–14:00</b></div>
