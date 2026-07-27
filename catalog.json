@@ -1,7 +1,7 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T17:22:36.102Z",
-  "data_hash": "2d860a03b4548eaa18fc4b39539c708f5a530ff9020c659f1dbeff37f41886b3",
+  "generated_at": "2026-07-27T17:37:03.650Z",
+  "data_hash": "251c20d0e18fa09308407e2c55637d82149a4694a7df746a98c81f2c789fac9e",
   "defaultQrId": "110040M_r2",
   "products": {
     "110040M": {
@@ -10,7 +10,7 @@
       "photo_url": "photos/110040M.webp",
       "instruction_url": "instructions/110040M.pdf",
       "instruction_enabled": "ON",
-      "video_url": "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+      "video_url": "",
       "video_enabled": "OFF",
       "active": "ON"
     }
