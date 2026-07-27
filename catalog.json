@@ -1,7 +1,7 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T11:54:32.196Z",
-  "data_hash": "47d4b2eda906c97c5cac24932fc407f076f1e2a7011487a2eeddb5a9222f6710",
+  "generated_at": "2026-07-27T14:20:22.911Z",
+  "data_hash": "3e09e17b3934db5fa0909f47ddc7d0cc33f9dd2d62ca7b4e1b883b49ab5d5f44",
   "defaultQrId": "inhaler_r1",
   "products": {
     "inhaler": {
@@ -52,7 +52,7 @@
       "type": "phone",
       "value": "+380735805030",
       "display": "+38 073 580 50 30",
-      "hours": "Пн–Пт, 9:00–18:00",
+      "hours": "Пн–Пт, 10:00–18:00",
       "active": "ON"
     },
     "viber_a": {
