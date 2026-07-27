@@ -230,14 +230,18 @@
       ? config.contacts.whatsapp
       : accounts[store.whatsapp_key] || {};
 
-    const phoneSubtitle = text(phoneAcc.display) +
-      (text(phoneAcc.hours) ? " · " + text(phoneAcc.hours) : "");
+    const phoneSubtitle = text(phoneAcc.display);
     setLink(
       "phoneLink",
       "tel:" + text(phoneAcc.tel || phoneAcc.value),
       phoneSubtitle,
       Boolean(text(phoneAcc.tel || phoneAcc.value))
     );
+    const phoneHoursNode = document.getElementById("phoneHours");
+    if (phoneHoursNode) {
+      phoneHoursNode.textContent = text(phoneAcc.hours);
+      phoneHoursNode.hidden = !text(phoneAcc.hours);
+    }
     setLink(
       "viberLink",
       "viber://chat?number=%2B" + text(viberAcc.number || viberAcc.value).replace(/\D/g, ""),
