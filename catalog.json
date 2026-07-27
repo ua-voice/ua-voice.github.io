@@ -1,8 +1,8 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T15:51:10.175Z",
-  "data_hash": "4b58f0b7417c4ebc939f0ee6466a0bf690233b8f05886405072b62921f5207ff",
-  "defaultQrId": "110040M_r1",
+  "generated_at": "2026-07-27T17:16:34.119Z",
+  "data_hash": "9be3d333eea613998fb321f3a9b4520c8512f3ad769744b086c0cb67f956c691",
+  "defaultQrId": "",
   "products": {
     "110040M": {
       "product_id": "110040M",
@@ -50,42 +50,32 @@
   "contacts": {
     "phone_a": {
       "type": "phone",
-      "value": "+380735805030",
+      "value": "+380934085054",
       "display": "+38 073 580 50 30",
       "hours": "Пн–Пт, 10:00–18:00",
       "active": "ON"
     },
     "viber_a": {
       "type": "viber",
-      "value": "380735805030",
+      "value": "380934085054",
       "display": "+38 073 580 50 30",
       "hours": "",
       "active": "ON"
     },
     "telegram_a": {
       "type": "telegram",
-      "value": "https://t.me/+380735805030",
+      "value": "https://t.me/+380934085054",
       "display": "+38 073 580 50 30",
       "hours": "",
       "active": "ON"
     },
     "whatsapp_a": {
       "type": "whatsapp",
-      "value": "380735805030",
+      "value": "380934085054",
       "display": "+38 073 580 50 30",
       "hours": "",
       "active": "ON"
     }
   },
-  "routes": {
-    "110040M_r1": {
-      "qr_id": "110040M_r1",
-      "product_id": "110040M",
-      "store_id": "rozetka1",
-      "callback_enabled": "ON",
-      "review_url": "https://example.com/review/inhaler-rozetka1",
-      "reviews_enabled": "OFF",
-      "active": "ON"
-    }
-  }
+  "routes": {}
 }
