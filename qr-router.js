@@ -353,6 +353,29 @@
     }
   }
 
+  function showQrStartPage() {
+    const loadState = document.getElementById("loadState");
+    const pageContent = document.getElementById("pageContent");
+    const title = document.getElementById("loadTitle");
+    const description = document.getElementById("loadText");
+    const retry = document.getElementById("retryButton");
+    const phoneLink = document.getElementById("fallbackPhone");
+
+    document.title = "Підтримка товару";
+    if (pageContent) pageContent.hidden = true;
+    if (loadState) {
+      loadState.hidden = false;
+      loadState.classList.remove("is-loading");
+    }
+    if (title) title.textContent = "Відскануйте QR-код";
+    if (description) {
+      description.textContent =
+        "Щоб відкрити інструкцію та підтримку, відскануйте QR-код на упаковці товару.";
+    }
+    if (retry) retry.hidden = true;
+    if (phoneLink) phoneLink.hidden = true;
+  }
+
   function catalogUrl() {
     const url = new URL(text(service.catalogUrl) || "catalog.json", window.location.href);
     url.searchParams.set("_", String(Date.now()));
@@ -391,14 +414,16 @@
   }
 
   async function start() {
+    const params = new URLSearchParams(window.location.search);
+    const requestedQrId = text(params.get("qr"));
+    if (!requestedQrId) {
+      showQrStartPage();
+      return;
+    }
+
     showLoading();
     try {
       catalog = await loadCatalogWithRetry();
-      const params = new URLSearchParams(window.location.search);
-      const requestedQrId =
-        text(params.get("qr")) ||
-        text(catalog.defaultQrId) ||
-        text(service.defaultQrId);
       const config = localConfig(requestedQrId);
       if (!config) {
         showError("route_not_found");
