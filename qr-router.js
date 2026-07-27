@@ -1,21 +1,19 @@
 /*
-  qr-router.js — відкриває потрібний товар і магазин за адресою:
+  qr-router.js — читає швидкий знімок catalog.json із GitHub і відкриває
+  потрібний товар та магазин за адресою:
     https://ваш-домен.ua/?qr=inhaler_r1
 
-  Повні адреси GitHub у коді не зберігаються, тому надалі можна
-  підключити власний домен без зміни product_id, store_id та qr_id.
+  Google Apps Script не викликається під час відкриття сторінки.
+  Він потрібен лише для синхронізації catalog.json та заявок на дзвінок.
 */
 (function () {
   "use strict";
 
-  const catalog = window.QR_CATALOG || {};
+  let catalog = {};
   const accounts = (window.CONTACTS && window.CONTACTS.accounts) || {};
   const service = window.CALLBACK_SERVICE || {};
   const isOn = value => String(value || "").trim().toUpperCase() === "ON";
   const text = value => String(value == null ? "" : value).trim();
-
-  const params = new URLSearchParams(window.location.search);
-  const requestedQrId = text(params.get("qr")) || text(catalog.defaultQrId);
 
   function localConfig(qrId) {
     const route = catalog.routes && catalog.routes[qrId];
@@ -38,7 +36,13 @@
       reviews_enabled: route.reviews_enabled,
       route: route,
       product: product,
-      store: store
+      store: store,
+      contacts: {
+        phone: (catalog.contacts && catalog.contacts[store.phone_key]) || {},
+        viber: (catalog.contacts && catalog.contacts[store.viber_key]) || {},
+        telegram: (catalog.contacts && catalog.contacts[store.telegram_key]) || {},
+        whatsapp: (catalog.contacts && catalog.contacts[store.whatsapp_key]) || {}
+      }
     };
   }
 
@@ -283,98 +287,131 @@
     if (typeof window.initCallback === "function") {
       window.initCallback();
     }
+
+    const loadState = document.getElementById("loadState");
+    const pageContent = document.getElementById("pageContent");
+    if (loadState) loadState.hidden = true;
+    if (pageContent) pageContent.hidden = false;
   }
 
-  function showRouteError() {
-    const productNameNode = document.getElementById("productName");
-    if (productNameNode) productNameNode.textContent = "QR-КОД НЕ ЗНАЙДЕНО";
+  function emergencyPhone() {
+    const key = text(service.fallbackPhoneKey) || "phone_a";
+    return accounts[key] || {};
+  }
 
-    const actions = document.querySelector(".actions");
-    if (actions) {
-      Array.from(actions.children).forEach(node => {
-        node.hidden = true;
-      });
+  function showLoading() {
+    const loadState = document.getElementById("loadState");
+    const pageContent = document.getElementById("pageContent");
+    const title = document.getElementById("loadTitle");
+    const description = document.getElementById("loadText");
+    const retry = document.getElementById("retryButton");
+    const phoneLink = document.getElementById("fallbackPhone");
+
+    if (pageContent) pageContent.hidden = true;
+    if (loadState) {
+      loadState.hidden = false;
+      loadState.classList.add("is-loading");
     }
-
-    const fallbackStore = catalog.stores &&
-      catalog.routes &&
-      catalog.routes[catalog.defaultQrId] &&
-      catalog.stores[catalog.routes[catalog.defaultQrId].store_id];
-    const fallbackPhone = fallbackStore
-      ? accounts[fallbackStore.phone_key] || {}
-      : {};
-
-    if (actions && text(fallbackPhone.tel)) {
-      const link = document.createElement("a");
-      link.className = "action action-soft-phone";
-      link.href = "tel:" + text(fallbackPhone.tel);
-      link.innerHTML =
-        '<span class="action-text"><p class="action-title">Зателефонувати</p>' +
-        '<p class="action-sub">' + text(fallbackPhone.display) + "</p></span>";
-      actions.appendChild(link);
+    if (title) title.textContent = "Завантажуємо інформацію";
+    if (description) {
+      description.textContent =
+        "Зачекайте кілька секунд — готуємо сторінку Вашого товару.";
     }
+    if (retry) retry.hidden = true;
+    if (phoneLink) phoneLink.hidden = true;
+  }
 
-    const thanks = document.querySelector(".thanks");
-    if (thanks) {
-      thanks.textContent =
-        "Цей QR-код неактивний або адреса введена неправильно. Зверніться до нашої підтримки.";
+  function showError(type) {
+    const loadState = document.getElementById("loadState");
+    const title = document.getElementById("loadTitle");
+    const description = document.getElementById("loadText");
+    const retry = document.getElementById("retryButton");
+    const phoneLink = document.getElementById("fallbackPhone");
+    const phone = emergencyPhone();
+    const phoneValue = text(phone.tel || phone.value);
+
+    if (loadState) {
+      loadState.hidden = false;
+      loadState.classList.remove("is-loading");
+    }
+    if (title) {
+      title.textContent = type === "route_not_found"
+        ? "QR-код не знайдено"
+        : "Не вдалося завантажити сторінку";
+    }
+    if (description) {
+      description.textContent = type === "route_not_found"
+        ? "Цей QR-код неактивний або адреса введена неправильно."
+        : "Перевірте інтернет-з’єднання та спробуйте ще раз.";
+    }
+    if (retry) retry.hidden = false;
+    if (phoneLink && phoneValue) {
+      phoneLink.href = "tel:" + phoneValue;
+      phoneLink.textContent =
+        "Зателефонувати" + (text(phone.display) ? " · " + text(phone.display) : "");
+      phoneLink.hidden = false;
     }
   }
 
-  function loadRemoteConfig(qrId) {
-    const endpoint = text(service.endpoint);
-    if (!endpoint) return Promise.reject(new Error("missing_endpoint"));
+  function catalogUrl() {
+    const url = new URL(text(service.catalogUrl) || "catalog.json", window.location.href);
+    url.searchParams.set("_", String(Date.now()));
+    return url.toString();
+  }
 
-    return new Promise((resolve, reject) => {
-      const callbackName = "__uaVoiceQr" + Date.now() +
-        Math.random().toString(36).slice(2);
-      const script = document.createElement("script");
-      const timeoutMs = Math.max(1500, Number(service.configTimeoutMs) || 3500);
-      let finished = false;
-
-      function cleanup() {
-        window.clearTimeout(timer);
-        delete window[callbackName];
-        script.remove();
-      }
-
-      function finish(handler, value) {
-        if (finished) return;
-        finished = true;
-        cleanup();
-        handler(value);
-      }
-
-      window[callbackName] = payload => {
-        if (payload && payload.ok) {
-          finish(resolve, payload);
-        } else {
-          finish(reject, new Error("route_not_found"));
-        }
-      };
-
-      script.async = true;
-      script.onerror = () => finish(reject, new Error("config_load_failed"));
-      script.src = endpoint +
-        (endpoint.includes("?") ? "&" : "?") +
-        "action=config&qr=" + encodeURIComponent(qrId) +
-        "&callback=" + encodeURIComponent(callbackName) +
-        "&_=" + Date.now();
-
-      const timer = window.setTimeout(
-        () => finish(reject, new Error("config_timeout")),
-        timeoutMs
-      );
-      document.head.appendChild(script);
+  async function loadCatalog() {
+    const response = await fetch(catalogUrl(), {
+      cache: "no-store",
+      headers: { "Cache-Control": "no-cache" }
     });
+    if (!response.ok) throw new Error("catalog_load_failed");
+
+    const payload = await response.json();
+    if (!payload || !payload.products || !payload.stores || !payload.routes) {
+      throw new Error("invalid_catalog");
+    }
+    return payload;
   }
 
-  const fallback = localConfig(requestedQrId);
-  if (fallback) applyConfig(fallback);
+  function wait(ms) {
+    return new Promise(resolve => window.setTimeout(resolve, ms));
+  }
 
-  loadRemoteConfig(requestedQrId)
-    .then(applyConfig)
-    .catch(() => {
-      if (!fallback) showRouteError();
-    });
+  async function loadCatalogWithRetry() {
+    let lastError = null;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        return await loadCatalog();
+      } catch (error) {
+        lastError = error;
+        if (attempt < 2) await wait(500 + attempt * 500);
+      }
+    }
+    throw lastError || new Error("catalog_load_failed");
+  }
+
+  async function start() {
+    showLoading();
+    try {
+      catalog = await loadCatalogWithRetry();
+      const params = new URLSearchParams(window.location.search);
+      const requestedQrId =
+        text(params.get("qr")) ||
+        text(catalog.defaultQrId) ||
+        text(service.defaultQrId);
+      const config = localConfig(requestedQrId);
+      if (!config) {
+        showError("route_not_found");
+        return;
+      }
+      applyConfig(config);
+    } catch (error) {
+      console.error("Catalog load failed:", error);
+      showError("catalog_load_failed");
+    }
+  }
+
+  const retryButton = document.getElementById("retryButton");
+  if (retryButton) retryButton.addEventListener("click", start);
+  start();
 })();

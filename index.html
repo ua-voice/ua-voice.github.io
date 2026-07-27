@@ -10,13 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-  /* Резервне фото, доки qr-router.js завантажує дані маршруту. */
-  :root{
-    --product-photo: url("product-hero.webp");
-  }
-</style>
-
-<style>
 
   :root{
     --ink:      #16213E;
@@ -58,11 +51,81 @@
     position:relative;
   }
 
+  /* ---------- loading / error state ---------- */
+  .load-state{
+    min-height:420px;
+    padding:48px 28px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+      radial-gradient(circle at 78% 18%, rgba(226,163,61,.14), transparent 28%),
+      radial-gradient(circle at 18% 78%, rgba(76,122,103,.14), transparent 32%),
+      linear-gradient(145deg, #F8FBF7 0%, #FBF9F4 58%, #F4EFE5 100%);
+  }
+  .load-icon{
+    width:68px;
+    height:68px;
+    margin-bottom:20px;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--sage);
+    background:rgba(76,122,103,.12);
+  }
+  .load-icon svg{ width:34px; height:34px; }
+  .load-state.is-loading .load-icon{
+    animation:loadPulse 1.15s ease-in-out infinite alternate;
+  }
+  @keyframes loadPulse{
+    from{ transform:scale(.96); opacity:.68; }
+    to{ transform:scale(1.04); opacity:1; }
+  }
+  .load-title{
+    margin:0 0 8px;
+    color:var(--ink);
+    font-size:20px;
+    font-weight:800;
+  }
+  .load-text{
+    max-width:310px;
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.55;
+  }
+  .retry-button,
+  .load-phone{
+    min-height:46px;
+    margin-top:18px;
+    border-radius:12px;
+    padding:12px 18px;
+    font:inherit;
+    font-size:13px;
+    font-weight:800;
+    text-decoration:none;
+  }
+  .retry-button{
+    border:0;
+    background:var(--ink);
+    color:#fff;
+    cursor:pointer;
+  }
+  .load-phone{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid #E2DACA;
+  }
+
   /* ---------- header ---------- */
   .head{
-    background:
-      var(--product-photo) center/cover no-repeat,
-      #EAF6F6;
+    background:#EAF6F6 center/cover no-repeat;
     background-size: cover;
     color:var(--ink);
     min-height:220px;
@@ -281,10 +344,24 @@
 <body>
 
   <div class="ticket">
+    <section class="load-state is-loading" id="loadState" role="status" aria-live="polite">
+      <span class="load-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <path d="M14 2v6h6"/>
+          <path d="M9 13h6M9 17h4"/>
+        </svg>
+      </span>
+      <h1 class="load-title" id="loadTitle">Завантажуємо інформацію</h1>
+      <p class="load-text" id="loadText">Зачекайте кілька секунд — готуємо сторінку Вашого товару.</p>
+      <button class="retry-button" id="retryButton" type="button" hidden>Спробувати ще раз</button>
+      <a class="load-phone" id="fallbackPhone" href="#" hidden>Зателефонувати</a>
+    </section>
 
+    <div id="pageContent" hidden>
     <div class="head">
       <p class="eyebrow">Підтримка товару</p>
-      <p class="product" id="productName">ІНГАЛЯТОР</p>
+      <p class="product" id="productName">Підтримка товару</p>
     </div>
 
     <div class="perf"></div>
@@ -292,7 +369,7 @@
     <div class="actions">
 
       <!-- 1. Інструкція -->
-      <a class="action action-soft-instruction" id="instructionLink" href="instruction.pdf" target="_blank" rel="noopener">
+      <a class="action action-soft-instruction" id="instructionLink" href="#" target="_blank" rel="noopener">
         <span class="icon tone-sage">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
         </span>
@@ -306,7 +383,7 @@
       </a>
 
       <!-- 2. Відеоінструкція — показується лише коли video: "ON" -->
-      <a class="action action-soft-video" id="videoLink" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">
+      <a class="action action-soft-video" id="videoLink" href="#" target="_blank" rel="noopener">
         <span class="icon tone-amber">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </span>
@@ -412,14 +489,14 @@
       <div class="barcode" id="barcode"></div>
       <p class="thanks">Дякуємо, що обрали наш магазин! <span aria-hidden="true">🫶</span><br>Збережіть це посилання, якщо загубите QR-код.</p>
     </div>
+    </div>
 
   </div>
 
-<script src="contacts.js?v=3"></script>
-<script src="catalog.js?v=3"></script>
-<script src="callback-config.js?v=33"></script>
-<script src="callback.js?v=3"></script>
-<script src="qr-router.js?v=3"></script>
+<script src="contacts.js?v=4"></script>
+<script src="callback-config.js?v=4"></script>
+<script src="callback.js?v=4"></script>
+<script src="qr-router.js?v=4"></script>
 
 </body>
 </html>
