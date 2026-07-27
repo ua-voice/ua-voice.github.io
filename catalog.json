@@ -1,7 +1,7 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T17:16:34.119Z",
-  "data_hash": "9be3d333eea613998fb321f3a9b4520c8512f3ad769744b086c0cb67f956c691",
+  "generated_at": "2026-07-27T17:18:29.475Z",
+  "data_hash": "8b2d167d18b1c7b4bdfc2f6800c76c539281343ae2963aa88c56265f5a228205",
   "defaultQrId": "",
   "products": {
     "110040M": {
@@ -51,27 +51,55 @@
     "phone_a": {
       "type": "phone",
       "value": "+380934085054",
-      "display": "+38 073 580 50 30",
+      "display": "38 093 408 50 54",
       "hours": "Пн–Пт, 10:00–18:00",
       "active": "ON"
     },
     "viber_a": {
       "type": "viber",
       "value": "380934085054",
-      "display": "+38 073 580 50 30",
+      "display": "38 093 408 50 54",
       "hours": "",
       "active": "ON"
     },
     "telegram_a": {
       "type": "telegram",
       "value": "https://t.me/+380934085054",
-      "display": "+38 073 580 50 30",
+      "display": "38 093 408 50 54",
       "hours": "",
       "active": "ON"
     },
     "whatsapp_a": {
       "type": "whatsapp",
       "value": "380934085054",
+      "display": "38 093 408 50 54",
+      "hours": "",
+      "active": "ON"
+    },
+    "phone_b": {
+      "type": "phone",
+      "value": "+380735805030",
+      "display": "+38 073 580 50 30",
+      "hours": "Пн–Пт, 10:00–18:00",
+      "active": "ON"
+    },
+    "viber_b": {
+      "type": "viber",
+      "value": "380735805030",
+      "display": "+38 073 580 50 30",
+      "hours": "",
+      "active": "ON"
+    },
+    "telegram_b": {
+      "type": "telegram",
+      "value": "https://t.me/+380735805030",
+      "display": "+38 073 580 50 30",
+      "hours": "",
+      "active": "ON"
+    },
+    "whatsapp_b": {
+      "type": "whatsapp",
+      "value": "380735805030",
       "display": "+38 073 580 50 30",
       "hours": "",
       "active": "ON"
