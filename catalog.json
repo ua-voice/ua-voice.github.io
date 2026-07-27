@@ -1,12 +1,12 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T11:43:27.122Z",
-  "data_hash": "9dbcd1aec37c865a537abf8398695f77c820fec2191989dd7ebcc9ac36237ef8",
+  "generated_at": "2026-07-27T11:50:54.411Z",
+  "data_hash": "122bda6073c18b11016855fbb6b8fd2d4a7b02184d7cc8e9f96ea4441cc7ccbb",
   "defaultQrId": "inhaler_r1",
   "products": {
     "inhaler": {
       "product_id": "inhaler",
-      "name": "ІНГАЛЯТОРИ",
+      "name": "ІНГАЛЯТОР",
       "photo_url": "photos/inhaler.webp",
       "instruction_url": "instructions/inhaler.pdf",
       "instruction_enabled": "ON",
