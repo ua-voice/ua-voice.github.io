@@ -96,6 +96,7 @@
     color:var(--muted);
     font-size:13px;
     line-height:1.55;
+    white-space:pre-line;
   }
   .retry-button,
   .error-report-button{
@@ -116,10 +117,14 @@
   }
   .error-report-button{
     margin-top:10px;
-    border:1px solid #D8E8E0;
-    color:#355F4E;
-    background:#EEF6F2;
+    border:1px solid #3F6B59;
+    color:#fff;
+    background:var(--sage);
+    box-shadow:0 8px 18px -10px rgba(53,95,78,.65);
     cursor:pointer;
+  }
+  .error-report-button:hover{
+    background:#416D5A;
   }
   .error-report-button:disabled{
     cursor:wait;
@@ -542,7 +547,7 @@
 <script src="contacts.js?v=4"></script>
 <script src="callback-config.js?v=8"></script>
 <script src="callback.js?v=4"></script>
-<script src="qr-router.js?v=10"></script>
+<script src="qr-router.js?v=11"></script>
 
 </body>
 </html>
