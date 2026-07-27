@@ -1,25 +1,38 @@
 /*
   callback.js — спільна кнопка і форма «Замовити дзвінок».
 
-  Кожна товарна сторінка задає лише:
-    window.PRODUCT_CALLBACK = { enabled: "ON", id: "product-id" };
+  QR-маршрутизатор задає:
+    window.PRODUCT_CALLBACK = {
+      enabled: "ON",
+      productId: "код-товару",
+      qrId: "код-qr",
+      storeId: "код-магазину",
+      telegramRouteId: "код-команди"
+    };
 
-  Назву товару визначає Google Apps Script за дозволеним id.
+  Назву товару та напрямок Telegram визначає Google Apps Script за qrId.
 */
 (function () {
   "use strict";
 
-  const product = window.PRODUCT_CALLBACK || {};
-  const service = window.CALLBACK_SERVICE || {};
-  const isOn = value => String(value).trim().toUpperCase() === "ON";
-  const endpoint = String(service.endpoint || "").trim();
+  let initialized = false;
 
-  if (!isOn(product.enabled) || !product.id || !endpoint) return;
+  window.initCallback = function () {
+    if (initialized) return;
 
-  const actions = document.querySelector(".actions");
-  if (!actions) return;
+    const product = window.PRODUCT_CALLBACK || {};
+    const service = window.CALLBACK_SERVICE || {};
+    const isOn = value => String(value).trim().toUpperCase() === "ON";
+    const endpoint = String(service.endpoint || "").trim();
+    const productId = String(product.productId || product.id || "").trim();
 
-  const style = document.createElement("style");
+    if (!isOn(product.enabled) || !productId || !endpoint) return;
+
+    const actions = document.querySelector(".actions");
+    if (!actions) return;
+    initialized = true;
+
+    const style = document.createElement("style");
   style.textContent = `
     .callback-action{
       width:100%;
@@ -347,7 +360,10 @@
     }
 
     const payload = new URLSearchParams();
-    payload.set("productId", String(product.id));
+    payload.set("productId", productId);
+    payload.set("qrId", String(product.qrId || ""));
+    payload.set("storeId", String(product.storeId || ""));
+    payload.set("telegramRouteId", String(product.telegramRouteId || ""));
     payload.set("phone", phone);
     payload.set("name", String(data.get("name") || "").trim());
     payload.set("preferredTime", String(data.get("preferredTime") || ""));
@@ -382,5 +398,6 @@
       submitButton.disabled = false;
       submitButton.textContent = "НАДІСЛАТИ ЗАПИТ";
     }
-  });
+    });
+  };
 })();
