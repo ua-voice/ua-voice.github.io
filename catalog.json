@@ -1,8 +1,8 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T17:37:03.650Z",
-  "data_hash": "251c20d0e18fa09308407e2c55637d82149a4694a7df746a98c81f2c789fac9e",
-  "defaultQrId": "110040M_r2",
+  "generated_at": "2026-07-27T17:53:57.956Z",
+  "data_hash": "1cf3e2bbea7a4d5e3f1e609592b12802dd5aa66ad829d5912c12679e5620cb89",
+  "defaultQrId": "110040M_",
   "products": {
     "110040M": {
       "product_id": "110040M",
@@ -126,8 +126,8 @@
     }
   },
   "routes": {
-    "110040M_r2": {
-      "qr_id": "110040M_r2",
+    "110040M_": {
+      "qr_id": "110040M_",
       "product_id": "110040M",
       "store_id": "rozetka2",
       "callback_enabled": "ON",
