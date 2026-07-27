@@ -1,7 +1,7 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T00:00:00.000Z",
-  "data_hash": "initial-example",
+  "generated_at": "2026-07-27T11:43:27.122Z",
+  "data_hash": "9dbcd1aec37c865a537abf8398695f77c820fec2191989dd7ebcc9ac36237ef8",
   "defaultQrId": "inhaler_r1",
   "products": {
     "inhaler": {
@@ -19,6 +19,26 @@
     "rozetka1": {
       "store_id": "rozetka1",
       "name": "Rozetka 1",
+      "phone_key": "phone_a",
+      "viber_key": "viber_a",
+      "telegram_key": "telegram_a",
+      "whatsapp_key": "whatsapp_a",
+      "telegram_route_id": "team_1",
+      "active": "ON"
+    },
+    "prom1": {
+      "store_id": "prom1",
+      "name": "Prom 1",
+      "phone_key": "phone_a",
+      "viber_key": "viber_a",
+      "telegram_key": "telegram_a",
+      "whatsapp_key": "whatsapp_a",
+      "telegram_route_id": "team_1",
+      "active": "ON"
+    },
+    "epicentr1": {
+      "store_id": "epicentr1",
+      "name": "Епіцентр 1",
       "phone_key": "phone_a",
       "viber_key": "viber_a",
       "telegram_key": "telegram_a",
