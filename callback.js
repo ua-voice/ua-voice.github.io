@@ -91,6 +91,31 @@
       font-size:13px;
       line-height:1.5;
     }
+    .callback-schedule{
+      margin:10px 0 0;
+      border-radius:11px;
+      padding:9px 11px;
+      background:#F3EFE7;
+      color:#5F584E;
+      font-size:11.5px;
+      line-height:1.4;
+    }
+    .callback-schedule-line{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .callback-schedule-line + .callback-schedule-line{ margin-top:2px; }
+    .callback-schedule-line b{
+      color:#3F3A33;
+      font-weight:700;
+    }
+    .callback-schedule-note{
+      display:block;
+      margin-top:6px;
+      color:#7A7064;
+      font-size:10.5px;
+    }
     .callback-close{
       flex:0 0 auto;
       width:36px;
@@ -181,6 +206,20 @@
       background:#E8F3ED;
       color:#285B45;
     }
+    .callback-success-title{
+      display:block;
+      margin-bottom:5px;
+      text-align:center;
+      font-size:14px;
+      font-weight:800;
+    }
+    .callback-success-text{ display:block; }
+    .callback-success-messenger{
+      display:block;
+      margin-top:8px;
+      color:#6B5CA5;
+      font-weight:600;
+    }
     .callback-honeypot{
       position:absolute !important;
       left:-10000px !important;
@@ -239,8 +278,13 @@
         <div class="callback-head-text">
           <h2 class="callback-title" id="callbackTitle">Замовити дзвінок</h2>
           <p class="callback-description">
-            Залиште номер телефону — менеджер зв’яжеться з Вами у робочий час.
+            Залиште номер телефону — менеджер зателефонує Вам у вибраний проміжок часу в робочий день.
           </p>
+          <div class="callback-schedule" aria-label="Робочі години для зворотного дзвінка">
+            <div class="callback-schedule-line"><span>Пн–Пт</span><b>10:00–18:00</b></div>
+            <div class="callback-schedule-line"><span>Сб–Нд</span><b>вихідні</b></div>
+            <span class="callback-schedule-note">* у святкові дні робочий час може бути скорочено або оголошено вихідний день</span>
+          </div>
         </div>
         <button class="callback-close" type="button" aria-label="Закрити">&times;</button>
       </div>
@@ -260,12 +304,11 @@
         </div>
 
         <div class="callback-field">
-          <label class="callback-label" for="callbackTime">Коли зручно зателефонувати?</label>
+          <label class="callback-label" for="callbackTime">Коли Вам зручно прийняти дзвінок?</label>
           <select class="callback-select" id="callbackTime" name="preferredTime">
-            <option value="Якнайшвидше">Якнайшвидше</option>
-            <option value="09:00–12:00">З 09:00 до 12:00</option>
-            <option value="12:00–15:00">З 12:00 до 15:00</option>
-            <option value="15:00–18:00">З 15:00 до 18:00</option>
+            <option value="Якнайшвидше у робочий час">Якнайшвидше у робочий час</option>
+            <option value="10:00–14:00">з 10:00 до 14:00</option>
+            <option value="14:00–18:00">з 14:00 до 18:00</option>
           </select>
         </div>
 
@@ -385,10 +428,16 @@
 
       localStorage.setItem("uaVoiceCallbackLast", String(Date.now()));
       form.reset();
-      showMessage(
-        "Дякуємо! Запит отримано. Менеджер зв’яжеться з Вами у робочий час.",
-        "success"
-      );
+      message.className = "callback-message is-success";
+      message.innerHTML = `
+        <span class="callback-success-title">Дякуємо! Запит прийнято.</span>
+        <span class="callback-success-text">
+          Менеджер зателефонує Вам у вибраний проміжок часу відповідно до нашого робочого графіка.
+        </span>
+        <span class="callback-success-messenger">
+          Ви також можете поставити запитання, натиснувши кнопку «Написати в месенджер».
+        </span>
+      `;
     } catch (error) {
       showMessage(
         "Не вдалося надіслати запит. Спробуйте ще раз або зателефонуйте нам.",
