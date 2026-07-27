@@ -98,7 +98,7 @@
     line-height:1.55;
   }
   .retry-button,
-  .load-phone{
+  .error-report-button{
     min-height:46px;
     margin-top:18px;
     border-radius:12px;
@@ -114,13 +114,26 @@
     color:#fff;
     cursor:pointer;
   }
-  .load-phone{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--ink);
-    background:#fff;
-    border:1px solid #E2DACA;
+  .error-report-button{
+    margin-top:10px;
+    border:1px solid #D8E8E0;
+    color:#355F4E;
+    background:#EEF6F2;
+    cursor:pointer;
+  }
+  .error-report-button:disabled{
+    cursor:wait;
+    opacity:.7;
+  }
+  .error-report-message{
+    max-width:310px;
+    margin:10px 0 0;
+    color:#355F4E;
+    font-size:12px;
+    line-height:1.45;
+  }
+  .error-report-message.is-error{
+    color:#8D2525;
   }
 
   /* ---------- header ---------- */
@@ -375,7 +388,11 @@
       <h1 class="load-title" id="loadTitle">Завантажуємо інформацію</h1>
       <p class="load-text" id="loadText">Зачекайте кілька секунд — готуємо сторінку Вашого товару.</p>
       <button class="retry-button" id="retryButton" type="button" hidden>Спробувати ще раз</button>
-      <a class="load-phone" id="fallbackPhone" href="#" hidden>Зателефонувати</a>
+      <button class="error-report-button" id="errorReportButton" type="button" hidden>
+        Повідомити про помилку
+      </button>
+      <p class="error-report-message" id="errorReportMessage" role="status"
+        aria-live="polite" hidden></p>
     </section>
 
     <div id="pageContent" hidden>
@@ -523,9 +540,9 @@
   </div>
 
 <script src="contacts.js?v=4"></script>
-<script src="callback-config.js?v=6"></script>
+<script src="callback-config.js?v=8"></script>
 <script src="callback.js?v=4"></script>
-<script src="qr-router.js?v=8"></script>
+<script src="qr-router.js?v=10"></script>
 
 </body>
 </html>

@@ -3,13 +3,15 @@
   потрібний товар та магазин за адресою:
     https://ваш-домен.ua/?qr=inhaler_r1
 
-  Google Apps Script не викликається під час відкриття сторінки.
-  Він потрібен лише для синхронізації catalog.json та заявок на дзвінок.
+  Google Apps Script не викликається під час звичайного відкриття сторінки.
+  Він потрібен для синхронізації catalog.json, заявок на дзвінок і
+  повідомлень про несправний QR-код.
 */
 (function () {
   "use strict";
 
   let catalog = {};
+  let activeErrorType = "";
   const accounts = (window.CONTACTS && window.CONTACTS.accounts) || {};
   const service = window.CALLBACK_SERVICE || {};
   const isOn = value => String(value || "").trim().toUpperCase() === "ON";
@@ -298,9 +300,20 @@
     if (pageContent) pageContent.hidden = false;
   }
 
-  function emergencyPhone() {
-    const key = text(service.fallbackPhoneKey) || "phone_a";
-    return accounts[key] || {};
+  function resetErrorReport() {
+    const button = document.getElementById("errorReportButton");
+    const message = document.getElementById("errorReportMessage");
+    activeErrorType = "";
+    if (button) {
+      button.hidden = true;
+      button.disabled = false;
+      button.textContent = "Повідомити про помилку";
+    }
+    if (message) {
+      message.hidden = true;
+      message.textContent = "";
+      message.className = "error-report-message";
+    }
   }
 
   function showLoading() {
@@ -309,7 +322,6 @@
     const title = document.getElementById("loadTitle");
     const description = document.getElementById("loadText");
     const retry = document.getElementById("retryButton");
-    const phoneLink = document.getElementById("fallbackPhone");
 
     if (pageContent) pageContent.hidden = true;
     if (loadState) {
@@ -322,7 +334,7 @@
         "Зачекайте кілька секунд — готуємо сторінку Вашого товару.";
     }
     if (retry) retry.hidden = true;
-    if (phoneLink) phoneLink.hidden = true;
+    resetErrorReport();
   }
 
   function showError(type) {
@@ -330,9 +342,9 @@
     const title = document.getElementById("loadTitle");
     const description = document.getElementById("loadText");
     const retry = document.getElementById("retryButton");
-    const phoneLink = document.getElementById("fallbackPhone");
-    const phone = emergencyPhone();
-    const phoneValue = text(phone.tel || phone.value);
+    const reportButton = document.getElementById("errorReportButton");
+    const reportMessage = document.getElementById("errorReportMessage");
+    activeErrorType = type;
 
     if (loadState) {
       loadState.hidden = false;
@@ -345,15 +357,19 @@
     }
     if (description) {
       description.textContent = type === "route_not_found"
-        ? "Наразі цей QR-код неактивний. Спробуйте відкрити сторінку трохи пізніше. Якщо повідомлення з’явиться повторно, зателефонуйте нам за номером нижче та повідомте про помилку. Дякуємо за розуміння!"
-        : "Перевірте інтернет-з’єднання та спробуйте ще раз.";
+        ? "Наразі цей QR-код неактивний. Спробуйте відкрити сторінку трохи пізніше. Якщо повідомлення з’явиться повторно, натисніть «Повідомити про помилку». Дякуємо за розуміння!"
+        : "Перевірте інтернет-з’єднання та спробуйте ще раз. Якщо проблема повторюється, натисніть «Повідомити про помилку».";
     }
     if (retry) retry.hidden = false;
-    if (phoneLink && phoneValue) {
-      phoneLink.href = "tel:" + phoneValue;
-      phoneLink.textContent =
-        "Зателефонувати" + (text(phone.display) ? " · " + text(phone.display) : "");
-      phoneLink.hidden = false;
+    if (reportButton) {
+      reportButton.hidden = !text(service.endpoint);
+      reportButton.disabled = false;
+      reportButton.textContent = "Повідомити про помилку";
+    }
+    if (reportMessage) {
+      reportMessage.hidden = true;
+      reportMessage.textContent = "";
+      reportMessage.className = "error-report-message";
     }
   }
 
@@ -363,7 +379,6 @@
     const title = document.getElementById("loadTitle");
     const description = document.getElementById("loadText");
     const retry = document.getElementById("retryButton");
-    const phoneLink = document.getElementById("fallbackPhone");
 
     document.title = "Підтримка товару";
     if (pageContent) pageContent.hidden = true;
@@ -377,7 +392,52 @@
         "Щоб відкрити інструкцію та підтримку, відскануйте QR-код на упаковці товару.";
     }
     if (retry) retry.hidden = true;
-    if (phoneLink) phoneLink.hidden = true;
+    resetErrorReport();
+  }
+
+  async function reportCurrentError() {
+    const button = document.getElementById("errorReportButton");
+    const message = document.getElementById("errorReportMessage");
+    const endpoint = text(service.endpoint);
+    if (!button || !message || !endpoint || !activeErrorType) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const payload = new URLSearchParams();
+    payload.set("action", "report_error");
+    payload.set("errorType", activeErrorType);
+    payload.set("qrId", text(params.get("qr")));
+    payload.set("pageUrl", window.location.href);
+    payload.set("website", "");
+    payload.set("reportedAt", new Date().toISOString());
+
+    button.disabled = true;
+    button.textContent = "Надсилаємо…";
+    message.hidden = true;
+    message.textContent = "";
+    message.className = "error-report-message";
+
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body: payload.toString(),
+        referrerPolicy: "no-referrer"
+      });
+      button.textContent = "Повідомлення надіслано";
+      message.textContent =
+        "Дякуємо! Ми отримали адресу сторінки та перевіримо QR-код.";
+      message.hidden = false;
+    } catch (error) {
+      button.disabled = false;
+      button.textContent = "Повідомити про помилку";
+      message.textContent =
+        "Не вдалося надіслати повідомлення. Перевірте інтернет і спробуйте ще раз.";
+      message.className = "error-report-message is-error";
+      message.hidden = false;
+    }
   }
 
   function catalogUrl() {
@@ -442,5 +502,9 @@
 
   const retryButton = document.getElementById("retryButton");
   if (retryButton) retryButton.addEventListener("click", start);
+  const errorReportButton = document.getElementById("errorReportButton");
+  if (errorReportButton) {
+    errorReportButton.addEventListener("click", reportCurrentError);
+  }
   start();
 })();
