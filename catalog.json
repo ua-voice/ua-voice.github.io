@@ -1,7 +1,7 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T18:48:48.063Z",
-  "data_hash": "251c20d0e18fa09308407e2c55637d82149a4694a7df746a98c81f2c789fac9e",
+  "generated_at": "2026-07-27T18:57:38.871Z",
+  "data_hash": "6ce48d6f7fecb2f5e929283d22456dcf936fb364f502ba9b7db433094ad23cd2",
   "defaultQrId": "110040M_r2",
   "products": {
     "110040M": {
@@ -131,7 +131,7 @@
       "product_id": "110040M",
       "store_id": "rozetka2",
       "callback_enabled": "ON",
-      "review_url": "https://example.com/review/inhaler-rozetka1",
+      "review_url": "",
       "reviews_enabled": "OFF",
       "active": "ON"
     }
