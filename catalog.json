@@ -1,8 +1,8 @@
 {
   "schema_version": 4,
-  "generated_at": "2026-07-27T17:20:37.131Z",
-  "data_hash": "d19cf269ebca10fa9b1b3a2960c957e0bb524672913ce0389f5b153cd7d69066",
-  "defaultQrId": "",
+  "generated_at": "2026-07-27T17:22:36.102Z",
+  "data_hash": "2d860a03b4548eaa18fc4b39539c708f5a530ff9020c659f1dbeff37f41886b3",
+  "defaultQrId": "110040M_r2",
   "products": {
     "110040M": {
       "product_id": "110040M",
@@ -23,7 +23,7 @@
       "viber_key": "viber_a",
       "telegram_key": "telegram_a",
       "whatsapp_key": "whatsapp_a",
-      "telegram_route_id": "team_1",
+      "telegram_route_id": "team_2",
       "active": "ON"
     },
     "prom1": {
@@ -33,7 +33,7 @@
       "viber_key": "viber_a",
       "telegram_key": "telegram_a",
       "whatsapp_key": "whatsapp_a",
-      "telegram_route_id": "team_1",
+      "telegram_route_id": "team_2",
       "active": "ON"
     },
     "epicentr1": {
@@ -43,6 +43,26 @@
       "viber_key": "viber_a",
       "telegram_key": "telegram_a",
       "whatsapp_key": "whatsapp_a",
+      "telegram_route_id": "team_2",
+      "active": "ON"
+    },
+    "rozetka2": {
+      "store_id": "rozetka2",
+      "name": "Rozetka 2",
+      "phone_key": "phone_b",
+      "viber_key": "viber_b",
+      "telegram_key": "telegram_b",
+      "whatsapp_key": "whatsapp_b",
+      "telegram_route_id": "team_1",
+      "active": "ON"
+    },
+    "prom2": {
+      "store_id": "prom2",
+      "name": "Prom 2",
+      "phone_key": "phone_b",
+      "viber_key": "viber_b",
+      "telegram_key": "telegram_b",
+      "whatsapp_key": "whatsapp_b",
       "telegram_route_id": "team_1",
       "active": "ON"
     }
@@ -105,5 +125,15 @@
       "active": "ON"
     }
   },
-  "routes": {}
+  "routes": {
+    "110040M_r2": {
+      "qr_id": "110040M_r2",
+      "product_id": "110040M",
+      "store_id": "rozetka2",
+      "callback_enabled": "ON",
+      "review_url": "https://example.com/review/inhaler-rozetka1",
+      "reviews_enabled": "OFF",
+      "active": "ON"
+    }
+  }
 }
